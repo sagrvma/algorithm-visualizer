@@ -1,8 +1,8 @@
-import type { Tile } from "../types";
+import type { TileType } from "../types";
 import "./Tile.css";
 
 interface TileProps {
-  tile: Tile;
+  tile: TileType;
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
 }

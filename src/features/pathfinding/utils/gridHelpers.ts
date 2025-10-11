@@ -1,4 +1,4 @@
-import type { Tile, Grid } from "../types";
+import type { TileType, GridType } from "../types";
 
 const ROWS = 20;
 const COLUMNS = 40;
@@ -6,14 +6,14 @@ const COLUMNS = 40;
 export const START_NODE = { row: 10, col: 10 };
 export const END_NODE = { row: 10, col: 30 };
 
-const createInitialGrid = (): Grid => {
-  const grid: Grid = [];
+const createInitialGrid = (): GridType => {
+  const grid: GridType = [];
 
   for (let row = 0; row < ROWS; row++) {
-    const currentRow: Tile[] = [];
+    const currentRow: TileType[] = [];
 
     for (let col = 0; col < COLUMNS; col++) {
-      const cell: Tile = {
+      const cell: TileType = {
         row,
         col,
         isStart: row === START_NODE.row && col === START_NODE.col,
