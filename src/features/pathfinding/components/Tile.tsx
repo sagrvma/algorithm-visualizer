@@ -1,4 +1,5 @@
 import type { Tile } from "../types";
+import "./Tile.css";
 
 interface TileProps {
   tile: Tile;

@@ -1,0 +1,74 @@
+/*Base Tile Styling - applies to all tiles*/
+.tile {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/*Starting Tile - Green*/
+.tile-start {
+  background-color: #4caf50;
+}
+
+/*End/Target Tile - Red Color*/
+.tile-end {
+  background-color: #f44336;
+}
+
+/*Wall/Obstacle - Dark Grey*/
+.tile-wall {
+  background-color: #333;
+  cursor: not-allowed; /*Show "not allowed" on wall*/
+}
+
+/*Visited Tile - Light Blue with animation*/
+.tile-visited {
+  background-color: rgba(173, 216, 230, 0.5);
+  animation: visitedAnimation 0.3s ease-out forwards;
+}
+
+/*Final path - Yellow/Gold with animation*/
+.tile-path {
+  background-color: #ffd700;
+  animation: pathAnimation 0.5s ease-out forwards;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(173, 216, 230, 0.2);
+    border-radius: 50%;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(173, 216, 230, 0.5);
+    border-radius: 0%;
+  }
+}
+
+@keyframes pathAnimation {
+  0% {
+    transform: scale(0.6);
+    background-color: rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.2);
+    background-color: rgba(255, 215, 0, 0.7);
+  }
+  100% {
+    transform: scale(1);
+    background-color: #ffd700;
+  }
+}
+
+/*Hover effect for empty tiles (to show they are interactive)*/
+.tile:hover:not(.tile-start):not(.tile-end) {
+  background-color: #f0f0f0;
+}
