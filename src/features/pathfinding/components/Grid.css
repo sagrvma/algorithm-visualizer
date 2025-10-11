@@ -1,0 +1,11 @@
+.grid {
+  display: flex;
+  flex-direction: column; /*Stacks the rows vertically (top to bottom)*/
+  align-items: center;
+  margin: 20px 0;
+  user-select: none; /*Prevents text selection when dragging*/
+}
+
+.grid-row {
+  display: flex; /*flex-direction is by default row, so tiles go from left to right by default*/
+}

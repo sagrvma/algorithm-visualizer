@@ -25,3 +25,5 @@ const Grid = ({ grid, onMouseDown, onMouseEnter }: gridProps) => {
     </div>
   );
 };
+
+export default Grid;
