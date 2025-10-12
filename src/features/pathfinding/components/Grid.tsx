@@ -1,6 +1,6 @@
 import type { GridType } from "../types";
 import Tile from "./Tile";
-
+import "./Grid.css";
 interface gridProps {
   grid: GridType; //The 2D array containing all the tile data (20x40)
   onMouseDown: (row: number, col: number) => void; //Function to call when clicking a tile
