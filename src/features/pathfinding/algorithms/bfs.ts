@@ -87,3 +87,5 @@ const getShortestPath = (endTile: TileType): TileType[] => {
 
   return shortestPath;
 };
+
+export { bfs, getShortestPath };
