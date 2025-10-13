@@ -10,6 +10,13 @@ const PathFindingVisualizer = () => {
   const [grid, setGrid] = useState<GridType>(createInitialGrid());
   const [isMousePressed, setIsMousePressed] = useState<boolean>(false); //Used for click-and-drag wall drawing functionality
   const [isVisualizing, setIsVisualizing] = useState<boolean>(false); //To prevent user from drawing walls or starting another animation while the visualization animation is already running
+  const [speed, setSpeed] = useState<number>(50);
+
+  //SPEED CHANGE HANDLER
+  const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const newSpeed = Number(e.target.value);
+    setSpeed(newSpeed);
+  };
 
   //WALL DRAWING HANDLERS/EVENT HANDLERS
   const toggleWall = (
@@ -95,7 +102,7 @@ const PathFindingVisualizer = () => {
     visitedTiles: (typeof grid)[0],
     shortestPath: (typeof grid)[0]
   ): void => {
-    const VISITED_SPEED = 10;
+    const VISITED_ANIMATION_DELAY = 101 - speed; //Since this will directly affect the delay, so if user chooses a faster speed, the delay will be more. So to invert that, subtract from 101. Now for faster speeds, there will be a lesser delay, and a faster animation, which makes more sense.
 
     for (let i = 0; i < visitedTiles.length; i++) {
       setTimeout(() => {
@@ -118,12 +125,12 @@ const PathFindingVisualizer = () => {
             animatePath(shortestPath);
           }, 50);
         }
-      }, VISITED_SPEED * i);
+      }, VISITED_ANIMATION_DELAY * i);
     }
   };
 
   const animatePath = (path: (typeof grid)[0]): void => {
-    const PATH_SPEED = 50; //Slower than Visted animation speed
+    const PATH_ANIMATION_DELAY = (101 - speed) * 5; //Should be slower than visitedpathdelay, so multiplying by 5 to make it more noticeable
 
     for (let i = 0; i < path.length; i++) {
       setTimeout(() => {
@@ -142,7 +149,7 @@ const PathFindingVisualizer = () => {
         if (i === path.length - 1) {
           setIsVisualizing(false);
         }
-      }, PATH_SPEED * i);
+      }, PATH_ANIMATION_DELAY * i);
     }
   };
 
@@ -169,6 +176,20 @@ const PathFindingVisualizer = () => {
         <button onClick={resetGrid} disabled={isVisualizing}>
           Reset
         </button>
+        <div className="speed-control">
+          <label htmlFor="speed-slider">
+            Speed: <span className="speed-value">{speed}</span>
+          </label>
+          <input
+            id="speed-slider"
+            type="range"
+            min="1"
+            max="100"
+            value={speed}
+            onChange={handleSpeedChange}
+            disabled={isVisualizing}
+          />
+        </div>
       </div>
 
       <Grid
