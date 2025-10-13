@@ -43,6 +43,108 @@ button:disabled {
   box-shadow: none;
 }
 
+/* Speed control container */
+.speed-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  min-width: 250px;
+}
+
+/* Label styling */
+.speed-control label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Current speed value badge */
+.speed-value {
+  background-color: #4caf50;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Range slider styling */
+#speed-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+/* Slider thumb (the draggable circle) - Webkit browsers */
+#speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #4caf50;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+/* Thumb hover effect */
+#speed-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Slider thumb - Firefox */
+#speed-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #4caf50;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+#speed-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Disabled slider styling */
+#speed-slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#speed-slider:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+/* Speed labels (Slow/Fast) */
+.speed-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
 /* Legend container */
 .legend {
   margin-top: 30px;
