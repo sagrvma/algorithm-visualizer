@@ -4,14 +4,6 @@
   user-select: none; /*Prevents text selection during dragging*/
 }
 
-.controls {
-  margin: 20px 0;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  align-items: center;
-}
-
 button {
   padding: 12px 24px;
   font-size: 16px;
@@ -41,6 +33,38 @@ button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+/* Clear buttons - different styling from main action button */
+.clear-button {
+  background-color: #ff9800; /* Orange - warning color */
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.clear-button:hover:not(:disabled) {
+  background-color: #f57c00; /* Darker orange on hover */
+}
+
+/* Reset button - most destructive action */
+.reset-button {
+  background-color: #f44336; /* Red - danger color */
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.reset-button:hover:not(:disabled) {
+  background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Make controls wrap nicely on smaller screens */
+.controls {
+  margin: 20px 0;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
 /* Speed control container */

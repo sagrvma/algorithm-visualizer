@@ -165,6 +165,44 @@ const PathFindingVisualizer = () => {
     setGrid(newGrid);
   };
 
+  //CLEAR PATH FUNCTIONALITY
+  const clearPath = (): void => {
+    if (isVisualizing) {
+      return;
+    }
+
+    setGrid((prevGrid) => {
+      const newGrid = prevGrid.map((r) =>
+        r.map((tile) => ({
+          ...tile,
+          isPath: false,
+          isVisited: false,
+          distance: Infinity,
+          parent: null,
+        }))
+      );
+
+      return newGrid;
+    });
+  };
+
+  //CLEAR WALLS FUNCTIONALITY
+  const clearWalls = (): void => {
+    if (isVisualizing) {
+      return;
+    }
+
+    setGrid((prevGrid) => {
+      const newGrid = prevGrid.map((r) =>
+        r.map((tile) => ({
+          ...tile,
+          isWall: false,
+        }))
+      );
+      return newGrid;
+    });
+  };
+
   //RENDER
   return (
     //adding mouseUp handler here so it works even if the mouse pointer leaves the grid
@@ -173,7 +211,25 @@ const PathFindingVisualizer = () => {
         <button onClick={visualizeBFS} disabled={isVisualizing}>
           Visualize BFS
         </button>
-        <button onClick={resetGrid} disabled={isVisualizing}>
+        <button
+          className="clear-button"
+          onClick={clearPath}
+          disabled={isVisualizing}
+        >
+          Clear Path
+        </button>
+        <button
+          className="clear-button"
+          onClick={clearWalls}
+          disabled={isVisualizing}
+        >
+          Clear Walls
+        </button>
+        <button
+          className="reset-button"
+          onClick={resetGrid}
+          disabled={isVisualizing}
+        >
           Reset
         </button>
         <div className="speed-control">
