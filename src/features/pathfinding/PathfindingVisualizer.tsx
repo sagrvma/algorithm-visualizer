@@ -4,6 +4,7 @@ import createInitialGrid, { END_NODE, START_NODE } from "./utils/gridHelpers";
 import { bfs, getShortestPath } from "./algorithms/bfs";
 import Grid from "./components/Grid";
 import "./PathfindingVisualizer.css";
+import { renderToPipeableStream } from "react-dom/server";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -86,7 +87,18 @@ const PathFindingVisualizer = () => {
 
     setIsVisualizing(true);
 
-    const gridCopy: GridType = grid.map((r) => r.map((tile) => ({ ...tile })));
+    clearPath(); //This is asynchronous, as it involed setting react state. So this depends on the Event loop to queue it accordingly. The reason it works is because the animations below depend on another asynchronous event which is setTimeout which is always queued after react state updates. So the event loop automatically ensures the order of execution turns out to be right.
+
+    const gridCopy: GridType = grid.map((r) =>
+      r.map((tile) => ({
+        ...tile,
+        //Setting it back to clean so as to ensure if the path is already present, the animation still runs as otherwise if we dont clear it and use visualize after it has already ran before, visited class will already be present in the tiles and the animation won't run as it only runs when the class is added for the first time, thats how the animation works.
+        isVisited: false,
+        isPath: false,
+        distance: Infinity,
+        parent: null,
+      }))
+    );
 
     const startTile = gridCopy[START_NODE.row][START_NODE.col];
     const endTile = gridCopy[END_NODE.row][END_NODE.col];
