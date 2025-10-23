@@ -5,6 +5,7 @@ import { bfs, getShortestPath } from "./algorithms/bfs";
 import Grid from "./components/Grid";
 import "./PathfindingVisualizer.css";
 import { dijkstra } from "./algorithms/dijkstra";
+import { generateMaze } from "./utils/mazeGenerator";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -18,6 +19,16 @@ const PathFindingVisualizer = () => {
   const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedAlgorithm = e.target.value as "BFS" | "DIJKSTRA";
     setAlgorithm(selectedAlgorithm);
+  };
+
+  //HANDLE MAZE GENERATION
+  const handleMazeGeneration = () => {
+    if (isVisualizing) {
+      return;
+    }
+
+    const newGrid = generateMaze(grid);
+    setGrid(newGrid);
   };
 
   //SPEED CHANGE HANDLER
@@ -247,6 +258,13 @@ const PathFindingVisualizer = () => {
         </div>
         <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
           Visualize {algorithm === "DIJKSTRA" ? "Dijkstra" : "BFS"}
+        </button>
+        <button
+          className="maze-button"
+          onClick={handleMazeGeneration}
+          disabled={isVisualizing}
+        >
+          Generate Maze
         </button>
         <button
           className="clear-button"

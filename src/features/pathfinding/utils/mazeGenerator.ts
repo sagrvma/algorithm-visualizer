@@ -1,7 +1,7 @@
 import type { GridType } from "../types";
 
 /*
-The objective is to keep dividing the grid into divisions but leaving one gap open in each new row we add to all subregions remain connected to each other.
+The objective is to keep dividing the grid into divisions but leaving one gap open in each new row we add to all subregions remain connected to each other. 
 */
 
 const generateMaze = (grid: GridType): GridType => {
@@ -55,6 +55,7 @@ const divide = (
       if (col !== gapCol) {
         const tile = grid[wallRow][col];
         if (!tile.isStart && !tile.isEnd) {
+          //Leave the start and end untouched so the maze is always solvable
           tile.isWall = true;
         }
       }
@@ -77,6 +78,7 @@ const divide = (
       if (row !== gapRow) {
         const tile = grid[row][wallCol];
         if (!tile.isStart && !tile.isEnd) {
+          //Leave the start and end untouched so the maze is always solvable
           tile.isWall = true;
         }
       }
