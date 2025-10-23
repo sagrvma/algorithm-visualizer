@@ -4,6 +4,47 @@
   user-select: none; /*Prevents text selection during dragging*/
 }
 
+/* Algorithm selector container */
+.algorithm-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.algorithm-selector label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.algorithm-selector select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 2px solid #4caf50;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  min-width: 200px;
+  transition: all 0.3s ease;
+}
+
+.algorithm-selector select:hover:not(:disabled) {
+  border-color: #45a049;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.algorithm-selector select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+.algorithm-selector select:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
 button {
   padding: 12px 24px;
   font-size: 16px;
