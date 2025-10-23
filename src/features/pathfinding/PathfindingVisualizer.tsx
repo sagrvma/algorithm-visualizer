@@ -4,6 +4,7 @@ import createInitialGrid, { END_NODE, START_NODE } from "./utils/gridHelpers";
 import { bfs, getShortestPath } from "./algorithms/bfs";
 import Grid from "./components/Grid";
 import "./PathfindingVisualizer.css";
+import { dijkstra } from "./algorithms/dijkstra";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -11,6 +12,13 @@ const PathFindingVisualizer = () => {
   const [isMousePressed, setIsMousePressed] = useState<boolean>(false); //Used for click-and-drag wall drawing functionality
   const [isVisualizing, setIsVisualizing] = useState<boolean>(false); //To prevent user from drawing walls or starting another animation while the visualization animation is already running
   const [speed, setSpeed] = useState<number>(50);
+  const [algorithm, setAlgorithm] = useState<"BFS" | "DIJKSTRA">("BFS");
+
+  //ALGORITHM CHANGE HANDLER
+  const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedAlgorithm = e.target.value as "BFS" | "DIJKSTRA";
+    setAlgorithm(selectedAlgorithm);
+  };
 
   //SPEED CHANGE HANDLER
   const handleSpeedChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -79,7 +87,7 @@ const PathFindingVisualizer = () => {
 
   //VISUALIZATION LOGIC
 
-  const visualizeBFS = (): void => {
+  const visualizeAlgorithm = (): void => {
     if (isVisualizing) {
       return;
     }
@@ -102,7 +110,13 @@ const PathFindingVisualizer = () => {
     const startTile = gridCopy[START_NODE.row][START_NODE.col];
     const endTile = gridCopy[END_NODE.row][END_NODE.col];
 
-    const visitedTiles = bfs(gridCopy, startTile, endTile);
+    let visitedTiles: TileType[] = [];
+
+    if (algorithm === "BFS") {
+      visitedTiles = bfs(gridCopy, startTile, endTile);
+    } else if (algorithm === "DIJKSTRA") {
+      visitedTiles = dijkstra(gridCopy, startTile, endTile);
+    }
 
     const shortestPath = getShortestPath(endTile);
 
@@ -219,7 +233,19 @@ const PathFindingVisualizer = () => {
     //adding mouseUp handler here so it works even if the mouse pointer leaves the grid
     <div className="visualizerWrapper" onMouseUp={handleMouseUp}>
       <div className="controls">
-        <button onClick={visualizeBFS} disabled={isVisualizing}>
+        <div className="algorithm-selector">
+          <label htmlFor="algorithm-select">Algorithm:</label>
+          <select
+            id="algorithm-select"
+            value={algorithm}
+            onChange={handleAlgorithmChange}
+            disabled={isVisualizing}
+          >
+            <option value="BFS">Breadth-First Search</option>
+            <option value="DIJKSTRA">Dijkstra's Algorithm</option>
+          </select>
+        </div>
+        <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
           Visualize BFS
         </button>
         <button
