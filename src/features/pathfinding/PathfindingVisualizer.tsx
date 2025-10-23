@@ -246,7 +246,7 @@ const PathFindingVisualizer = () => {
           </select>
         </div>
         <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
-          Visualize BFS
+          Visualize {algorithm === "DIJKSTRA" ? "Dijkstra" : "BFS"}
         </button>
         <button
           className="clear-button"
