@@ -4,7 +4,6 @@ import createInitialGrid, { END_NODE, START_NODE } from "./utils/gridHelpers";
 import { bfs, getShortestPath } from "./algorithms/bfs";
 import Grid from "./components/Grid";
 import "./PathfindingVisualizer.css";
-import { renderToPipeableStream } from "react-dom/server";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
