@@ -6,6 +6,7 @@ import Grid from "./components/Grid";
 import "./PathfindingVisualizer.css";
 import { dijkstra } from "./algorithms/dijkstra";
 import { generateMaze } from "./utils/mazeGenerator";
+import { aStar } from "./algorithms/aStar";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -13,11 +14,13 @@ const PathFindingVisualizer = () => {
   const [isMousePressed, setIsMousePressed] = useState<boolean>(false); //Used for click-and-drag wall drawing functionality
   const [isVisualizing, setIsVisualizing] = useState<boolean>(false); //To prevent user from drawing walls or starting another animation while the visualization animation is already running
   const [speed, setSpeed] = useState<number>(50);
-  const [algorithm, setAlgorithm] = useState<"BFS" | "DIJKSTRA">("BFS");
+  const [algorithm, setAlgorithm] = useState<"BFS" | "DIJKSTRA" | "ASTAR">(
+    "BFS"
+  );
 
   //ALGORITHM CHANGE HANDLER
   const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedAlgorithm = e.target.value as "BFS" | "DIJKSTRA";
+    const selectedAlgorithm = e.target.value as "BFS" | "DIJKSTRA" | "ASTAR";
     setAlgorithm(selectedAlgorithm);
   };
 
@@ -127,6 +130,8 @@ const PathFindingVisualizer = () => {
       visitedTiles = bfs(gridCopy, startTile, endTile);
     } else if (algorithm === "DIJKSTRA") {
       visitedTiles = dijkstra(gridCopy, startTile, endTile);
+    } else if (algorithm === "ASTAR") {
+      visitedTiles = aStar(gridCopy, startTile, endTile);
     }
 
     const shortestPath = getShortestPath(endTile);
@@ -254,10 +259,16 @@ const PathFindingVisualizer = () => {
           >
             <option value="BFS">Breadth-First Search</option>
             <option value="DIJKSTRA">Dijkstra's Algorithm</option>
+            <option value="ASTAR">A* Search</option>
           </select>
         </div>
         <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
-          Visualize {algorithm === "DIJKSTRA" ? "Dijkstra" : "BFS"}
+          Visualize{" "}
+          {algorithm === "DIJKSTRA"
+            ? "Dijkstra"
+            : algorithm === "BFS"
+            ? "BFS"
+            : "A*"}
         </button>
         <button
           className="maze-button"
