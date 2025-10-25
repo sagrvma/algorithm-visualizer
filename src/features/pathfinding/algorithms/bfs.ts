@@ -1,5 +1,9 @@
 import type { GridType, TileType } from "../types";
 
+/*
+  Gurantees the shortest path
+*/
+
 const bfs = (
   grid: GridType,
   startTile: TileType,

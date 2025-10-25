@@ -1,6 +1,10 @@
 import type { GridType, TileType } from "../types";
 import { PriorityQueue } from "../utils/priorityQueue";
 
+/*
+  Gurantees the shortest Path
+*/
+
 const dijkstra = (
   grid: GridType,
   startTile: TileType,
