@@ -372,9 +372,11 @@ const PathFindingVisualizer = () => {
         >
           Clear Walls
         </button>
-        <button className="clear-button" onClick={clearWeights}>
-          {" "}
+        <button
+          className="clear-button"
+          onClick={clearWeights}
           disabled={isVisualizing}
+        >
           Clear Weights
         </button>
         <button
@@ -426,6 +428,14 @@ const PathFindingVisualizer = () => {
         <div className="legend-item">
           <span className="legend-box legend-wall"></span>
           <span>Wall</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-box legend-weight-medium"></span>
+          <span>Weight: 5</span>
+        </div>
+        <div className="legend-item">
+          <span className="legend-box legend-weight-heavy"></span>
+          <span>Weight: 15</span>
         </div>
       </div>
     </div>

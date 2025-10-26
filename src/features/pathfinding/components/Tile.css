@@ -6,6 +6,7 @@
   background-color: white;
   cursor: pointer;
   display: inline-block;
+  position: relative;
 }
 
 /*Starting Tile - Green*/

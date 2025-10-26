@@ -76,6 +76,21 @@ button:disabled {
   box-shadow: none;
 }
 
+/* Weight toggle button */
+.weight-toggle {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.weight-toggle:hover:not(:disabled) {
+  background-color: #7b1fa2;
+}
+
+.weight-toggle.active {
+  background-color: #ff9800;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
+
 /* Clear buttons - different styling from main action button */
 .clear-button {
   background-color: #ff9800; /* Orange - warning color */
@@ -257,4 +272,12 @@ button:disabled {
 
 .legend-path {
   background-color: #ffd700;
+}
+
+.legend-weight-medium {
+  background-color: #ffa500;
+}
+
+.legend-weight-heavy {
+  background-color: #8b4513;
 }
