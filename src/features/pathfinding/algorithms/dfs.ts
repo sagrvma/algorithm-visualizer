@@ -1,7 +1,9 @@
 import type { GridType, TileType } from "../types";
 
 /*
-    DFS is not suitable for pathfinding as it does not gurantee the shortest path   
+    DFS is not suitable for pathfinding as it does not gurantee the shortest path.
+
+    Ignores weight.
 */
 
 const dfs = (

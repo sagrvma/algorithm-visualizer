@@ -23,6 +23,7 @@ const createInitialGrid = (): GridType => {
         isPath: false,
         distance: Infinity,
         parent: null,
+        weight: 1, //Default weight is 1
       };
 
       currentRow.push(cell);

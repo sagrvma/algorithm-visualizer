@@ -78,7 +78,7 @@ const updateNeighbours = (
       continue;
     }
 
-    const weight = 1; //Unweighted for now
+    const weight = neighbour.weight;
     const newDistance = tile.distance + weight;
 
     //Relax the edge if new distance is shorter (this is only by considering g(n) in the check)

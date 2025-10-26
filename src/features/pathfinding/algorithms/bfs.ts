@@ -1,7 +1,9 @@
 import type { GridType, TileType } from "../types";
 
 /*
-  Gurantees the shortest path
+  Gurantees the shortest path.
+
+  Ignores weight.
 */
 
 const bfs = (

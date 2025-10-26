@@ -61,7 +61,7 @@ const updateNeighbours = (
       continue;
     }
 
-    const weight = 1; //Since unweighted right now
+    const weight = neighbour.weight;
     const newDistance = tile.distance + weight;
 
     //Relax the edge, only if we found a shorter path to this current tile, update it's distance, update its shorter path parent, and add to minHeap with new shorter distance

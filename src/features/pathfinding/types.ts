@@ -8,6 +8,7 @@ export interface TileType {
   isPath: boolean; //If this tile is part of the final shorted path (yellow)
   distance: number; //Shortest distance of current tile from starting node, Will be infinity by default
   parent: TileType | null; // Points to the previous tile in the shorted path
+  weight: number;
 }
 
 export type GridType = TileType[][];
