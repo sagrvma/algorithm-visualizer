@@ -7,6 +7,7 @@ import "./PathfindingVisualizer.css";
 import { dijkstra } from "./algorithms/dijkstra";
 import { generateMaze } from "./utils/mazeGenerator";
 import { aStar } from "./algorithms/aStar";
+import { dfs } from "./algorithms/dfs";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -14,13 +15,17 @@ const PathFindingVisualizer = () => {
   const [isMousePressed, setIsMousePressed] = useState<boolean>(false); //Used for click-and-drag wall drawing functionality
   const [isVisualizing, setIsVisualizing] = useState<boolean>(false); //To prevent user from drawing walls or starting another animation while the visualization animation is already running
   const [speed, setSpeed] = useState<number>(50);
-  const [algorithm, setAlgorithm] = useState<"BFS" | "DIJKSTRA" | "ASTAR">(
-    "BFS"
-  );
+  const [algorithm, setAlgorithm] = useState<
+    "BFS" | "DIJKSTRA" | "ASTAR" | "DFS"
+  >("BFS");
 
   //ALGORITHM CHANGE HANDLER
   const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedAlgorithm = e.target.value as "BFS" | "DIJKSTRA" | "ASTAR";
+    const selectedAlgorithm = e.target.value as
+      | "BFS"
+      | "DIJKSTRA"
+      | "ASTAR"
+      | "DFS";
     setAlgorithm(selectedAlgorithm);
   };
 
@@ -132,6 +137,8 @@ const PathFindingVisualizer = () => {
       visitedTiles = dijkstra(gridCopy, startTile, endTile);
     } else if (algorithm === "ASTAR") {
       visitedTiles = aStar(gridCopy, startTile, endTile);
+    } else if (algorithm === "DFS") {
+      visitedTiles = dfs(gridCopy, startTile, endTile);
     }
 
     const shortestPath = getShortestPath(endTile);
@@ -260,6 +267,7 @@ const PathFindingVisualizer = () => {
             <option value="BFS">Breadth-First Search</option>
             <option value="DIJKSTRA">Dijkstra's Algorithm</option>
             <option value="ASTAR">A* Search</option>
+            <option value="DFS">DFS</option>
           </select>
         </div>
         <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
@@ -268,7 +276,9 @@ const PathFindingVisualizer = () => {
             ? "Dijkstra"
             : algorithm === "BFS"
             ? "BFS"
-            : "A*"}
+            : algorithm === "ASTAR"
+            ? "A*"
+            : "DFS"}
         </button>
         <button
           className="maze-button"
