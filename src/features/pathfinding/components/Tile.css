@@ -72,3 +72,37 @@
 .tile:hover:not(.tile-start):not(.tile-end) {
   background-color: #f0f0f0;
 }
+
+/* Medium weight tile (5) - Orange */
+.tile-weight-medium {
+  background-color: #ffa500;
+  border: 1px solid #ff8c00;
+}
+
+/* Heavy weight tile (15) - Brown */
+.tile-weight-heavy {
+  background-color: #8b4513;
+  border: 1px solid #654321;
+}
+
+/* Weight label (number on tile) */
+.tile-weight-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* Visited tiles with weights (blend colors) */
+.tile-weight-medium.tile-visited {
+  background-color: rgba(255, 165, 0, 0.5);
+}
+
+.tile-weight-heavy.tile-visited {
+  background-color: rgba(139, 69, 19, 0.5);
+}

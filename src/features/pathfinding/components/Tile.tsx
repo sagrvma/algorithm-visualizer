@@ -9,7 +9,7 @@ interface TileProps {
 
 const Tile = ({ tile, onMouseDown, onMouseEnter }: TileProps) => {
   //Destructuring the tile for ease of use
-  const { row, col, isStart, isEnd, isWall, isPath, isVisited } = tile;
+  const { row, col, isStart, isEnd, isWall, isPath, isVisited, weight } = tile;
 
   //Deciding which conditional class the tile will get to display relevant css colour
   const getTileClass = () => {
@@ -19,6 +19,11 @@ const Tile = ({ tile, onMouseDown, onMouseEnter }: TileProps) => {
     if (isWall) return "tile tile-wall";
     if (isPath) return "tile tile-path";
     if (isVisited) return "tile tile-visited";
+
+    //Added weight classes
+    if (weight === 5) return "tile tile-weight-medium";
+    if (weight === 15) return "tile tile-weight-heavy";
+
     return "tile";
   };
 
@@ -27,7 +32,11 @@ const Tile = ({ tile, onMouseDown, onMouseEnter }: TileProps) => {
       className={getTileClass()}
       onMouseDown={() => onMouseDown(row, col)}
       onMouseEnter={() => onMouseEnter(row, col)}
-    ></div>
+    >
+      {weight > 1 && !isStart && !isEnd && !isWall && !isPath && (
+        <span className="tile-weight-label">{weight}</span>
+      )}
+    </div>
     //Visual appearance will be handled by CSS
   );
 };
