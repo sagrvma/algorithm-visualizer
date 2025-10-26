@@ -18,6 +18,7 @@ const PathFindingVisualizer = () => {
   const [algorithm, setAlgorithm] = useState<
     "BFS" | "DIJKSTRA" | "ASTAR" | "DFS"
   >("BFS");
+  const [isWeightMode, setIsWeightMode] = useState<boolean>(false);
 
   //ALGORITHM CHANGE HANDLER
   const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -45,6 +46,11 @@ const PathFindingVisualizer = () => {
     setSpeed(newSpeed);
   };
 
+  //TOGGLE WEIGHT MODE
+  const toggleWeightMode = () => {
+    setIsWeightMode(!isWeightMode);
+  };
+
   //WALL DRAWING HANDLERS/EVENT HANDLERS
   const toggleWall = (
     currentGrid: GridType,
@@ -63,6 +69,31 @@ const PathFindingVisualizer = () => {
     return newGrid;
   };
 
+  //Weight Mode - Toggle Weights
+  const toggleWeight = (
+    currentGrid: GridType,
+    row: number,
+    col: number
+  ): GridType => {
+    const newGrid: GridType = currentGrid.map((r) =>
+      r.map((tile) => ({ ...tile }))
+    );
+
+    const tile: TileType = newGrid[row][col];
+
+    //Cycle through the weights
+    if (tile.weight === 1) {
+      tile.weight = 5;
+      tile.isWall = false; //Remove wall if it was one
+    } else if (tile.weight === 5) {
+      tile.weight = 15;
+    } else {
+      tile.weight = 1; //Back to normal
+    }
+
+    return newGrid;
+  };
+
   const handleMouseDown = (row: number, col: number): void => {
     if (isVisualizing) {
       return;
@@ -70,13 +101,20 @@ const PathFindingVisualizer = () => {
 
     const tile: TileType = grid[row][col];
 
+    //Don't modify start/end nodes
     if (tile.isStart || tile.isEnd) {
       return;
     }
 
-    const newGrid = toggleWall(grid, row, col);
-
-    setGrid(newGrid);
+    //In in weight mode, cycle through weights
+    if (isWeightMode) {
+      const newGrid = toggleWeight(grid, row, col);
+      setGrid(newGrid);
+    } else {
+      //Normal mode - Toggle walls
+      const newGrid = toggleWall(grid, row, col);
+      setGrid(newGrid);
+    }
 
     setIsMousePressed(true);
   };
@@ -96,8 +134,15 @@ const PathFindingVisualizer = () => {
       return;
     }
 
-    const newGrid = toggleWall(grid, row, col);
-    setGrid(newGrid);
+    if (isWeightMode) {
+      //Weight Mode
+      const newGrid = toggleWeight(grid, row, col);
+      setGrid(newGrid);
+    } else {
+      //Normal mode
+      const newGrid = toggleWall(grid, row, col);
+      setGrid(newGrid);
+    }
   };
 
   const handleMouseUp = (): void => {
@@ -251,6 +296,24 @@ const PathFindingVisualizer = () => {
     });
   };
 
+  //CLEAR WEIGHTS FUNCTIONALITY
+  const clearWeights = (): void => {
+    if (isVisualizing) {
+      return;
+    }
+
+    setGrid((prevGrid) => {
+      const newGrid = prevGrid.map((r) =>
+        r.map((tile) => ({
+          ...tile,
+          weight: 1, //Reset weight to normal
+        }))
+      );
+
+      return newGrid;
+    });
+  };
+
   //RENDER
   return (
     //adding mouseUp handler here so it works even if the mouse pointer leaves the grid
@@ -280,6 +343,14 @@ const PathFindingVisualizer = () => {
             ? "A*"
             : "DFS"}
         </button>
+
+        <button
+          className={`weight-toggle ${isWeightMode ? "active" : ""}`}
+          onClick={toggleWeightMode}
+          disabled={isVisualizing}
+        >
+          {isWeightMode ? "Weight Mode" : "Wall Mode"}
+        </button>
         <button
           className="maze-button"
           onClick={handleMazeGeneration}
@@ -300,6 +371,11 @@ const PathFindingVisualizer = () => {
           disabled={isVisualizing}
         >
           Clear Walls
+        </button>
+        <button className="clear-button" onClick={clearWeights}>
+          {" "}
+          disabled={isVisualizing}
+          Clear Weights
         </button>
         <button
           className="reset-button"
