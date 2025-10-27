@@ -9,14 +9,22 @@
   position: relative;
 }
 
-/*Starting Tile - Green*/
+/*Starting Tile - Green - Draggable*/
 .tile-start {
   background-color: #4caf50;
+  cursor: move; /* Show move cursor on hover */
 }
 
-/*End/Target Tile - Red Color*/
+/*End/Target Tile - Red Color - Draggable*/
 .tile-end {
   background-color: #f44336;
+  cursor: move; /* Show move cursor on hover */
+}
+
+/* When dragging, show grabbing cursor */
+.tile-start:active,
+.tile-end:active {
+  cursor: grabbing;
 }
 
 /*Wall/Obstacle - Dark Grey*/

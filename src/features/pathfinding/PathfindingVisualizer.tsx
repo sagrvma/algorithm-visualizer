@@ -19,6 +19,8 @@ const PathFindingVisualizer = () => {
     "BFS" | "DIJKSTRA" | "ASTAR" | "DFS"
   >("BFS");
   const [isWeightMode, setIsWeightMode] = useState<boolean>(false);
+  //Track which node is being dragged
+  const [draggedNode, setDraggedNode] = useState<"START" | "END" | null>(null);
 
   //ALGORITHM CHANGE HANDLER
   const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -101,6 +103,18 @@ const PathFindingVisualizer = () => {
 
     const tile: TileType = grid[row][col];
 
+    //Check if dragging start or end node
+    if (tile.isStart) {
+      setDraggedNode("START");
+      setIsMousePressed(true);
+      return;
+    }
+    if (tile.isEnd) {
+      setDraggedNode("END");
+      setIsMousePressed(true);
+      return;
+    }
+
     //Don't modify start/end nodes
     if (tile.isStart || tile.isEnd) {
       return;
@@ -130,6 +144,22 @@ const PathFindingVisualizer = () => {
 
     const tile: TileType = grid[row][col];
 
+    if (draggedNode === "START") {
+      //Dont move start node on end node or walls, could be handled automatically by placing this below the below check, but still here for clarity
+      if (tile.isEnd || tile.isWall) {
+        return;
+      }
+      moveStartNode(row, col);
+      return;
+    }
+    if (draggedNode === "END") {
+      if (tile.isStart || tile.isWall) {
+        return;
+      }
+      moveEndNode(row, col);
+      return;
+    }
+
     if (tile.isStart || tile.isEnd) {
       return;
     }
@@ -147,6 +177,83 @@ const PathFindingVisualizer = () => {
 
   const handleMouseUp = (): void => {
     setIsMousePressed(false);
+    //Unset dragged node
+    setDraggedNode(null);
+  };
+
+  //MOVE DRAGGED NODES
+  const moveStartNode = (newRow: number, newCol: number): void => {
+    setGrid((prevGrid) => {
+      const newGrid: GridType = prevGrid.map((r) =>
+        r.map((tile) => ({
+          ...tile,
+          isStart: false, //Unset old start node
+          //Clear path since on moving it becomes invalid
+          isVisited: false,
+          isPath: false,
+          distance: Infinity,
+          parent: null,
+        }))
+      );
+
+      // //Unset old start position
+      // for (let row = 0; row < newGrid.length; row++) {
+      //   for (let col = 0; col < newGrid[0].length; col++) {
+      //     if (newGrid[row][col].isStart) {
+      //       newGrid[row][col].isStart = false;
+      //     }
+      //   }
+      // }
+
+      //Set new start position
+      newGrid[newRow][newCol].isStart = true;
+
+      //Remove if it was earlier a wall
+      newGrid[newRow][newCol].isWall = false;
+
+      return newGrid;
+    });
+
+    //Update START_NODE's const reference
+    START_NODE.row = newRow;
+    START_NODE.col = newCol;
+  };
+
+  const moveEndNode = (newRow: number, newCol: number): void => {
+    setGrid((prevGrid) => {
+      const newGrid: GridType = prevGrid.map((r) =>
+        r.map((tile) => ({
+          ...tile,
+          isEnd: false, //Unset old end node
+          //Clear older path since on dragging it becomes invalid
+          isVisited: false,
+          isPath: false,
+          distance: Infinity,
+          parent: null,
+        }))
+      );
+
+      // //Unset older end node
+      // for (let row = 0; row < newGrid.length; row++) {
+      //   for (let col = 0; col < newGrid[0].length; col++) {
+      //     if (newGrid[row][col].isEnd) {
+      //       newGrid[row][col].isEnd = false;
+      //     }
+      //   }
+      // }
+
+      //Set new end
+      newGrid[newRow][newCol].isEnd = true;
+
+      //Remove if it was previously a wall
+      newGrid[newRow][newCol].isWall = false;
+
+      return newGrid;
+    });
+
+    //Update END_NODE's const reference
+    END_NODE.row = newRow;
+    END_NODE.col = newCol;
   };
 
   //VISUALIZATION LOGIC
@@ -252,6 +359,12 @@ const PathFindingVisualizer = () => {
     if (isVisualizing) {
       return;
     }
+
+    //Reset start and end nodes to default
+    START_NODE.row = 10;
+    START_NODE.col = 10;
+    END_NODE.row = 10;
+    END_NODE.col = 30;
 
     const newGrid: GridType = createInitialGrid();
 
