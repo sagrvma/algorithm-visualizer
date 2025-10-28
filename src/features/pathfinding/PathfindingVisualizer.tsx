@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { GridType, TileType } from "./types";
 import createInitialGrid, { END_NODE, START_NODE } from "./utils/gridHelpers";
 import { bfs, getShortestPath } from "./algorithms/bfs";
@@ -21,6 +21,43 @@ const PathFindingVisualizer = () => {
   const [isWeightMode, setIsWeightMode] = useState<boolean>(false);
   //Track which node is being dragged
   const [draggedNode, setDraggedNode] = useState<"START" | "END" | null>(null);
+
+  //Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      //Ignore shortcuts during visualization
+      if (isVisualizing) {
+        return;
+      }
+
+      //Convert key to lowercase for case-insensitive matching
+      const key = e.key.toLowerCase();
+
+      //Handle Shortcuts
+      switch (key) {
+        case " ": //Spacebar - Visualize
+          e.preventDefault(); //Prevent page scroll
+          visualizeAlgorithm();
+          break;
+        case "c": //C - Clear Path
+          clearPath();
+          break;
+        case "r": //R - Reset Grid
+          resetGrid();
+        case "w": //W - Toggle Weight Mode
+          toggleWeightMode();
+          break;
+      }
+    };
+
+    //Add Event Listener
+    window.addEventListener("keydown", handleKeyPress);
+
+    //Clean-up on unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isVisualizing, isWeightMode, grid, speed]);
 
   //ALGORITHM CHANGE HANDLER
   const handleAlgorithmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
