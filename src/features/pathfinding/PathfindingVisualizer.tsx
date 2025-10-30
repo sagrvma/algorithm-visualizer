@@ -350,24 +350,28 @@ const PathFindingVisualizer = () => {
 
     //Set values for stats
     const nodesExplored = visitedTiles.length;
+
+    const pathFound: boolean = shortestPath.length > 1; //More than just the start node
     const pathLength = shortestPath.length;
     const pathCost = shortestPath.reduce((total, tile) => {
       return total + tile.weight;
     }, 0);
 
-    setStats({
+    const calculatedStats = {
+      //Not setting them instantly as we want to wait for the animation to finish first
       nodesExplored,
-      pathLength,
-      pathCost,
-      isComplete: false, //Will be set to true when the animation completes
-    });
+      pathLength: pathFound ? pathLength : 0,
+      pathCost: pathFound ? pathCost : 0,
+      isComplete: true, //Will be set to true when the animation completes
+    };
 
-    animateAlgorithm(visitedTiles, shortestPath);
+    animateAlgorithm(visitedTiles, shortestPath, calculatedStats);
   };
 
   const animateAlgorithm = (
     visitedTiles: (typeof grid)[0],
-    shortestPath: (typeof grid)[0]
+    shortestPath: (typeof grid)[0],
+    calculatedStats: typeof stats //Added newly
   ): void => {
     const VISITED_ANIMATION_DELAY = 101 - speed; //Since this will directly affect the delay, so if user chooses a faster speed, the delay will be more. So to invert that, subtract from 101. Now for faster speeds, there will be a lesser delay, and a faster animation, which makes more sense.
 
@@ -389,14 +393,17 @@ const PathFindingVisualizer = () => {
 
         if (i === visitedTiles.length - 1) {
           setTimeout(() => {
-            animatePath(shortestPath);
+            animatePath(shortestPath, calculatedStats); //Pass stats forward
           }, 50);
         }
       }, VISITED_ANIMATION_DELAY * i);
     }
   };
 
-  const animatePath = (path: (typeof grid)[0]): void => {
+  const animatePath = (
+    path: (typeof grid)[0],
+    calculatedStats: typeof stats
+  ): void => {
     const PATH_ANIMATION_DELAY = (101 - speed) * 5; //Should be slower than visitedpathdelay, so multiplying by 5 to make it more noticeable
 
     for (let i = 0; i < path.length; i++) {
@@ -416,10 +423,7 @@ const PathFindingVisualizer = () => {
         if (i === path.length - 1) {
           setIsVisualizing(false);
           //Set  stats as complete
-          setStats((prevStats) => ({
-            ...prevStats,
-            isComplete: true,
-          }));
+          setStats(calculatedStats);
         }
       }, PATH_ANIMATION_DELAY * i);
     }
