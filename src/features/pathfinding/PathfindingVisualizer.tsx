@@ -21,6 +21,13 @@ const PathFindingVisualizer = () => {
   const [isWeightMode, setIsWeightMode] = useState<boolean>(false);
   //Track which node is being dragged
   const [draggedNode, setDraggedNode] = useState<"START" | "END" | null>(null);
+  //Statistics state
+  const [stats, setStats] = useState({
+    nodesExplored: 0,
+    pathLength: 0,
+    pathCost: 0,
+    isComplete: false,
+  });
 
   //Keyboard Shortcuts
   useEffect(() => {
@@ -44,6 +51,7 @@ const PathFindingVisualizer = () => {
           break;
         case "r": //R - Reset Grid
           resetGrid();
+          break;
         case "w": //W - Toggle Weight Mode
           toggleWeightMode();
           break;
@@ -302,6 +310,14 @@ const PathFindingVisualizer = () => {
 
     setIsVisualizing(true);
 
+    //Reset Statistics on starting a new visualization
+    setStats({
+      nodesExplored: 0,
+      pathLength: 0,
+      pathCost: 0,
+      isComplete: false,
+    });
+
     clearPath(); //This is asynchronous, as it involed setting react state. So this depends on the Event loop to queue it accordingly. The reason it works is because the animations below depend on another asynchronous event which is setTimeout which is always queued after react state updates. So the event loop automatically ensures the order of execution turns out to be right.
 
     const gridCopy: GridType = grid.map((r) =>
@@ -331,6 +347,20 @@ const PathFindingVisualizer = () => {
     }
 
     const shortestPath = getShortestPath(endTile);
+
+    //Set values for stats
+    const nodesExplored = visitedTiles.length;
+    const pathLength = shortestPath.length;
+    const pathCost = shortestPath.reduce((total, tile) => {
+      return total + tile.weight;
+    }, 0);
+
+    setStats({
+      nodesExplored,
+      pathLength,
+      pathCost,
+      isComplete: false, //Will be set to true when the animation completes
+    });
 
     animateAlgorithm(visitedTiles, shortestPath);
   };
@@ -385,6 +415,11 @@ const PathFindingVisualizer = () => {
         //After the last tile, animation ends
         if (i === path.length - 1) {
           setIsVisualizing(false);
+          //Set  stats as complete
+          setStats((prevStats) => ({
+            ...prevStats,
+            isComplete: true,
+          }));
         }
       }, PATH_ANIMATION_DELAY * i);
     }
@@ -551,6 +586,70 @@ const PathFindingVisualizer = () => {
           />
         </div>
       </div>
+
+      {stats.nodesExplored > 0 && (
+        <div
+          className={`stats-panel ${
+            stats.isComplete ? "complete" : "calculating"
+          }`}
+        >
+          <div className="stats-header">
+            <span className="stats-title">Algorithm Statistics</span>
+            {!stats.isComplete && (
+              <span className="stats-badge calculating">Calculating...</span>
+            )}
+            {stats.isComplete && (
+              <span className="stats-badge complete">Complete</span>
+            )}
+          </div>
+
+          <div className="stats-grid">
+            <div className="stats-item">
+              <div className="stat-icon">🔵</div>
+              <div className="stat-content">
+                <div className="stat-label">Nodes Explored</div>
+                <div className="stat-value">{stats.nodesExplored}</div>
+              </div>
+            </div>
+
+            <div className="stats-item">
+              <div className="stat-icon">📏</div>
+              <div className="stat-content">
+                <div className="stat-label">Path Length</div>
+                <div className="stat-value">
+                  {stats.pathLength > 0 ? stats.pathLength : "No path found."}
+                </div>
+              </div>
+            </div>
+
+            <div className="stats-item">
+              <div className="stat-icon">⚖️</div>
+              <div className="stat-content">
+                <div className="stat-label">Path Cost</div>
+                <div className="stat-value">
+                  {stats.pathCost > 0 ? stats.pathCost : "N/A"}
+                </div>
+              </div>
+            </div>
+
+            <div className="stats-item">
+              <div className="stat-icon">🎯</div>
+              <div className="stat-content">
+                <div className="stat-label">Algorithm</div>
+                <div className="stat-value">
+                  {algorithm === "DIJKSTRA"
+                    ? "Dijkstra"
+                    : algorithm === "BFS"
+                    ? "BFS"
+                    : algorithm === "ASTAR"
+                    ? "A*"
+                    : "DFS"}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Grid
         grid={grid}
