@@ -163,7 +163,6 @@ button:disabled {
   border-radius: 3px;
   background: linear-gradient(to right, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
   outline: none;
-  -webkit-appearance: none;
   cursor: pointer;
 }
 

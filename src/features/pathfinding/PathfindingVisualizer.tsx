@@ -8,6 +8,7 @@ import { dijkstra } from "./algorithms/dijkstra";
 import { generateMaze } from "./utils/mazeGenerator";
 import { aStar } from "./algorithms/aStar";
 import { dfs } from "./algorithms/dfs";
+import generateRandomMaze from "./utils/randomMaze";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -83,7 +84,8 @@ const PathFindingVisualizer = () => {
       return;
     }
 
-    const newGrid = generateMaze(grid);
+    // const newGrid = generateMaze(grid);
+    const newGrid = generateRandomMaze(grid, 0.2);
     setGrid(newGrid);
   };
 
