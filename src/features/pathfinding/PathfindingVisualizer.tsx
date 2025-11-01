@@ -5,10 +5,9 @@ import { bfs, getShortestPath } from "./algorithms/bfs";
 import Grid from "./components/Grid";
 import "./PathfindingVisualizer.css";
 import { dijkstra } from "./algorithms/dijkstra";
-import { generateMaze } from "./utils/mazeGenerator";
 import { aStar } from "./algorithms/aStar";
 import { dfs } from "./algorithms/dfs";
-import generateRandomMaze from "./utils/randomMaze";
+import generateRecBacktrackMaze from "./utils/randomMaze";
 
 const PathFindingVisualizer = () => {
   //STATE MANAGEMENT
@@ -84,8 +83,7 @@ const PathFindingVisualizer = () => {
       return;
     }
 
-    // const newGrid = generateMaze(grid);
-    const newGrid = generateRandomMaze(grid, 0.2);
+    const newGrid: GridType = generateRecBacktrackMaze(grid);
     setGrid(newGrid);
   };
 

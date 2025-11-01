@@ -1,7 +1,7 @@
 import type { TileType, GridType } from "../types";
 
-const ROWS = 20;
-const COLUMNS = 40;
+const ROWS = 21;
+const COLUMNS = 41;
 
 export const START_NODE = { row: 10, col: 10 };
 export const END_NODE = { row: 10, col: 30 };
