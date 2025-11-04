@@ -55,6 +55,7 @@ const generateRecBacktrackMaze = (grid: GridType): GridType => {
 
       //Mark as unvisited, to track throughout this process
       tile.isVisited = false;
+      tile.isPath = false; //Reset to remove the older path if exists
     }
   }
 

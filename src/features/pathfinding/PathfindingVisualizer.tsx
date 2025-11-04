@@ -507,6 +507,12 @@ const PathFindingVisualizer = () => {
   return (
     //adding mouseUp handler here so it works even if the mouse pointer leaves the grid
     <div className="visualizerWrapper" onMouseUp={handleMouseUp}>
+      <div className="visualizer-header">
+        <h1 className="visualizer-title">⚡ Pathfinding Visualizer</h1>
+        <p className="visualizer-subtitle">
+          Visualize algorithms • Generate mazes • Find optimal paths
+        </p>
+      </div>
       <div className="controls">
         <div className="algorithm-selector">
           <label htmlFor="algorithm-select">Algorithm:</label>
