@@ -51,3 +51,201 @@
     transform: translateY(0);
   }
 }
+
+/* ============================================
+   STEP 3: CONTROLS PANEL
+   Purple Premium Theme
+   ============================================ */
+
+/* Controls Container */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto 40px;
+  padding: 24px;
+  background: #1a0f2e;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   STEP 4: SELECTORS (Algorithm Dropdown)
+   Purple Premium Theme
+   ============================================ */
+
+/* Selector Container */
+.algorithm-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.algorithm-selector:hover {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.5);
+}
+
+/* Label */
+.algorithm-selector label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c4b5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Dropdown Select */
+.algorithm-selector select {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+  background: #2d1b4e;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 200px;
+  transition: all 0.2s ease;
+}
+
+.algorithm-selector select:hover:not(:disabled) {
+  background: #3d2b5e;
+  border-color: #a855f7;
+}
+
+.algorithm-selector select:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+}
+
+.algorithm-selector select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dropdown Arrow (Custom) */
+.algorithm-selector select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23a855f7' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+/* ============================================
+   STEP 5: BUTTONS - SIMPLIFIED
+   Solid Colors, No Gradients
+   ============================================ */
+
+/* Base Button Styles */
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Primary Button (Visualize) */
+button:not([class]) {
+  background: #a855f7;
+  color: #ffffff;
+}
+
+button:not([class]):hover:not(:disabled) {
+  background: #9333ea;
+}
+
+/* Weight Toggle Button */
+.weight-toggle {
+  background: #2d1b4e;
+  color: #c4b5fd;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.weight-toggle:hover:not(:disabled):not(.active) {
+  background: #3d2b5e;
+  color: #e9d5ff;
+}
+
+.weight-toggle.active {
+  background: #f59e0b;
+  color: #ffffff;
+  border: none;
+}
+
+.weight-toggle.active:hover:not(:disabled) {
+  background: #d97706;
+}
+
+/* Maze Button */
+.maze-button {
+  background: #ec4899;
+  color: #ffffff;
+}
+
+.maze-button:hover:not(:disabled) {
+  background: #db2777;
+}
+
+/* Clear Buttons */
+.clear-button {
+  background: #2d1b4e;
+  color: #c4b5fd;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.clear-button:hover:not(:disabled) {
+  background: #3d2b5e;
+  color: #e9d5ff;
+}
+
+/* Reset Button */
+.reset-button {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.reset-button:hover:not(:disabled) {
+  background: #dc2626;
+}
