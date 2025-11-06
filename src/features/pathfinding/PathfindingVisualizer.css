@@ -51,22 +51,19 @@
     transform: translateY(0);
   }
 }
-
 /* ============================================
-   STEP 3: CONTROLS PANEL
-   Purple Premium Theme
+   STEP 3: CONTROLS PANEL - SINGLE LINE
    ============================================ */
 
 /* Controls Container */
 .controls {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto auto auto auto 1fr auto auto auto auto auto;
   gap: 12px;
-  justify-content: center;
   align-items: center;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto 40px;
-  padding: 24px;
+  padding: 20px 32px;
   background: #1a0f2e;
   border: 1px solid rgba(168, 85, 247, 0.2);
   border-radius: 16px;
@@ -83,6 +80,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Responsive - Stack on Smaller Screens */
+@media (max-width: 1400px) {
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
@@ -295,7 +301,7 @@ button:not([class]):hover:not(:disabled) {
   width: 120px;
   height: 6px;
   border-radius: 3px;
-  background: #4f00aa;
+  background: #7904ff;
   outline: none;
   cursor: pointer;
   -webkit-appearance: none;
