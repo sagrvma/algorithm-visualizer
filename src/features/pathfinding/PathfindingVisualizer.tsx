@@ -505,196 +505,212 @@ const PathFindingVisualizer = () => {
 
   //RENDER
   return (
-    //adding mouseUp handler here so it works even if the mouse pointer leaves the grid
     <div className="visualizerWrapper" onMouseUp={handleMouseUp}>
-      <div className="visualizer-header">
-        <h1 className="visualizer-title">⚡ Pathfinding Visualizer</h1>
-        <p className="visualizer-subtitle">
-          Visualize algorithms • Generate mazes • Find optimal paths
-        </p>
-      </div>
-      <div className="controls">
-        <div className="algorithm-selector">
-          <label htmlFor="algorithm-select">Algorithm:</label>
-          <select
-            id="algorithm-select"
-            value={algorithm}
-            onChange={handleAlgorithmChange}
+      {/* TOP BAR: Header LEFT, Controls RIGHT */}
+      <div className="top-bar">
+        <div className="visualizer-header">
+          <h1 className="visualizer-title">⚡ Pathfinding Visualizer</h1>
+          <p className="visualizer-subtitle">
+            Visualize algorithms • Generate mazes • Find optimal paths
+          </p>
+        </div>
+
+        <div className="controls">
+          <div className="algorithm-selector">
+            <label htmlFor="algorithm-select">Algorithm:</label>
+            <select
+              id="algorithm-select"
+              value={algorithm}
+              onChange={handleAlgorithmChange}
+              disabled={isVisualizing}
+            >
+              <option value="BFS">Breadth-First Search</option>
+              <option value="DIJKSTRA">Dijkstra's Algorithm</option>
+              <option value="ASTAR">A* Search</option>
+              <option value="DFS">DFS</option>
+            </select>
+          </div>
+
+          <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
+            Visualize{" "}
+            {algorithm === "DIJKSTRA"
+              ? "Dijkstra"
+              : algorithm === "BFS"
+              ? "BFS"
+              : algorithm === "ASTAR"
+              ? "A*"
+              : "DFS"}
+          </button>
+
+          <button
+            className={`weight-toggle ${isWeightMode ? "active" : ""}`}
+            onClick={toggleWeightMode}
             disabled={isVisualizing}
           >
-            <option value="BFS">Breadth-First Search</option>
-            <option value="DIJKSTRA">Dijkstra's Algorithm</option>
-            <option value="ASTAR">A* Search</option>
-            <option value="DFS">DFS</option>
-          </select>
-        </div>
-        <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
-          Visualize{" "}
-          {algorithm === "DIJKSTRA"
-            ? "Dijkstra"
-            : algorithm === "BFS"
-            ? "BFS"
-            : algorithm === "ASTAR"
-            ? "A*"
-            : "DFS"}
-        </button>
+            {isWeightMode ? "Weight Mode" : "Wall Mode"}
+          </button>
 
-        <button
-          className={`weight-toggle ${isWeightMode ? "active" : ""}`}
-          onClick={toggleWeightMode}
-          disabled={isVisualizing}
-        >
-          {isWeightMode ? "Weight Mode" : "Wall Mode"}
-        </button>
-        <button
-          className="maze-button"
-          onClick={handleMazeGeneration}
-          disabled={isVisualizing}
-        >
-          Generate Maze
-        </button>
-        <button
-          className="clear-button"
-          onClick={clearPath}
-          disabled={isVisualizing}
-        >
-          Clear Path
-        </button>
-        <button
-          className="clear-button"
-          onClick={clearWalls}
-          disabled={isVisualizing}
-        >
-          Clear Walls
-        </button>
-        <button
-          className="clear-button"
-          onClick={clearWeights}
-          disabled={isVisualizing}
-        >
-          Clear Weights
-        </button>
-        <button
-          className="reset-button"
-          onClick={resetGrid}
-          disabled={isVisualizing}
-        >
-          Reset
-        </button>
-        <div className="speed-control">
-          <label htmlFor="speed-slider">
-            Speed: <span className="speed-value">{speed}</span>
-          </label>
-          <input
-            id="speed-slider"
-            type="range"
-            min="1"
-            max="100"
-            value={speed}
-            onChange={handleSpeedChange}
+          <button
+            className="maze-button"
+            onClick={handleMazeGeneration}
             disabled={isVisualizing}
-          />
+          >
+            Generate Maze
+          </button>
+
+          <button
+            className="clear-button"
+            onClick={clearPath}
+            disabled={isVisualizing}
+          >
+            Clear Path
+          </button>
+
+          <button
+            className="clear-button"
+            onClick={clearWalls}
+            disabled={isVisualizing}
+          >
+            Clear Walls
+          </button>
+
+          <button
+            className="clear-button"
+            onClick={clearWeights}
+            disabled={isVisualizing}
+          >
+            Clear Weights
+          </button>
+
+          <button
+            className="reset-button"
+            onClick={resetGrid}
+            disabled={isVisualizing}
+          >
+            Reset
+          </button>
+
+          <div className="speed-control">
+            <label htmlFor="speed-slider">
+              Speed: <span className="speed-value">{speed}</span>
+            </label>
+            <input
+              id="speed-slider"
+              type="range"
+              min="1"
+              max="100"
+              value={speed}
+              onChange={handleSpeedChange}
+              disabled={isVisualizing}
+            />
+          </div>
         </div>
       </div>
 
-      {stats.nodesExplored > 0 && (
-        <div
-          className={`stats-panel ${
-            stats.isComplete ? "complete" : "calculating"
-          }`}
-        >
-          <div className="stats-header">
-            <span className="stats-title">Algorithm Statistics</span>
-            {!stats.isComplete && (
-              <span className="stats-badge calculating">Calculating...</span>
-            )}
-            {stats.isComplete && (
-              <span className="stats-badge complete">Complete</span>
-            )}
+      {/* MAIN CONTENT: Stats + Grid + Legend */}
+      <div className="content-layout">
+        {/* Left Sidebar - Stats */}
+        {stats.nodesExplored > 0 && (
+          <div
+            className={`stats-panel ${
+              stats.isComplete ? "complete" : "calculating"
+            }`}
+          >
+            <div className="stats-header">
+              <span className="stats-title">Algorithm Statistics</span>
+              {!stats.isComplete && (
+                <span className="stats-badge calculating">Calculating...</span>
+              )}
+              {stats.isComplete && (
+                <span className="stats-badge complete">Complete</span>
+              )}
+            </div>
+
+            <div className="stats-grid">
+              <div className="stats-item">
+                <div className="stat-icon">🔵</div>
+                <div className="stat-content">
+                  <div className="stat-label">Nodes Explored</div>
+                  <div className="stat-value">{stats.nodesExplored}</div>
+                </div>
+              </div>
+
+              <div className="stats-item">
+                <div className="stat-icon">📏</div>
+                <div className="stat-content">
+                  <div className="stat-label">Path Length</div>
+                  <div className="stat-value">
+                    {stats.pathLength > 0 ? stats.pathLength : "No path"}
+                  </div>
+                </div>
+              </div>
+
+              <div className="stats-item">
+                <div className="stat-icon">⚖️</div>
+                <div className="stat-content">
+                  <div className="stat-label">Path Cost</div>
+                  <div className="stat-value">
+                    {stats.pathCost > 0 ? stats.pathCost : "N/A"}
+                  </div>
+                </div>
+              </div>
+
+              <div className="stats-item">
+                <div className="stat-icon">🎯</div>
+                <div className="stat-content">
+                  <div className="stat-label">Algorithm</div>
+                  <div className="stat-value">
+                    {algorithm === "DIJKSTRA"
+                      ? "Dijkstra"
+                      : algorithm === "BFS"
+                      ? "BFS"
+                      : algorithm === "ASTAR"
+                      ? "A*"
+                      : "DFS"}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        )}
 
-          <div className="stats-grid">
-            <div className="stats-item">
-              <div className="stat-icon">🔵</div>
-              <div className="stat-content">
-                <div className="stat-label">Nodes Explored</div>
-                <div className="stat-value">{stats.nodesExplored}</div>
-              </div>
-            </div>
+        {/* Center - Grid */}
+        <Grid
+          grid={grid}
+          onMouseDown={handleMouseDown}
+          onMouseEnter={handleMouseEnter}
+        />
 
-            <div className="stats-item">
-              <div className="stat-icon">📏</div>
-              <div className="stat-content">
-                <div className="stat-label">Path Length</div>
-                <div className="stat-value">
-                  {stats.pathLength > 0 ? stats.pathLength : "No path found."}
-                </div>
-              </div>
-            </div>
-
-            <div className="stats-item">
-              <div className="stat-icon">⚖️</div>
-              <div className="stat-content">
-                <div className="stat-label">Path Cost</div>
-                <div className="stat-value">
-                  {stats.pathCost > 0 ? stats.pathCost : "N/A"}
-                </div>
-              </div>
-            </div>
-
-            <div className="stats-item">
-              <div className="stat-icon">🎯</div>
-              <div className="stat-content">
-                <div className="stat-label">Algorithm</div>
-                <div className="stat-value">
-                  {algorithm === "DIJKSTRA"
-                    ? "Dijkstra"
-                    : algorithm === "BFS"
-                    ? "BFS"
-                    : algorithm === "ASTAR"
-                    ? "A*"
-                    : "DFS"}
-                </div>
-              </div>
-            </div>
+        {/* Right Sidebar - Legend */}
+        <div className="legend">
+          <div className="legend-item">
+            <span className="legend-box legend-start"></span>
+            <span>Start</span>
           </div>
-        </div>
-      )}
-
-      <Grid
-        grid={grid}
-        onMouseDown={handleMouseDown}
-        onMouseEnter={handleMouseEnter}
-      />
-
-      <div className="legend">
-        <div className="legend-item">
-          <span className="legend-box legend-start"></span>
-          <span>Start</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-box legend-end"></span>
-          <span>End</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-box legend-visited"></span>
-          <span>Visited</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-box legend-path"></span>
-          <span>Path</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-box legend-wall"></span>
-          <span>Wall</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-box legend-weight-medium"></span>
-          <span>Weight: 5</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-box legend-weight-heavy"></span>
-          <span>Weight: 15</span>
+          <div className="legend-item">
+            <span className="legend-box legend-end"></span>
+            <span>End</span>
+          </div>
+          <div className="legend-item">
+            <span className="legend-box legend-visited"></span>
+            <span>Visited</span>
+          </div>
+          <div className="legend-item">
+            <span className="legend-box legend-path"></span>
+            <span>Path</span>
+          </div>
+          <div className="legend-item">
+            <span className="legend-box legend-wall"></span>
+            <span>Wall</span>
+          </div>
+          <div className="legend-item">
+            <span className="legend-box legend-weight-medium"></span>
+            <span>Weight: 5</span>
+          </div>
+          <div className="legend-item">
+            <span className="legend-box legend-weight-heavy"></span>
+            <span>Weight: 15</span>
+          </div>
         </div>
       </div>
     </div>
