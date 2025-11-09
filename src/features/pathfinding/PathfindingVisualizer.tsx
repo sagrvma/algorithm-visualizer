@@ -525,21 +525,18 @@ const PathFindingVisualizer = () => {
               disabled={isVisualizing}
             >
               <option value="BFS">Breadth-First Search</option>
-              <option value="DIJKSTRA">Dijkstra's Algorithm</option>
+              <option value="DIJKSTRA">Dijkstra's</option>
               <option value="ASTAR">A* Search</option>
               <option value="DFS">DFS</option>
             </select>
           </div>
 
-          <button onClick={visualizeAlgorithm} disabled={isVisualizing}>
-            Visualize{" "}
-            {algorithm === "DIJKSTRA"
-              ? "Dijkstra"
-              : algorithm === "BFS"
-              ? "BFS"
-              : algorithm === "ASTAR"
-              ? "A*"
-              : "DFS"}
+          <button
+            className="visualize-button"
+            onClick={visualizeAlgorithm}
+            disabled={isVisualizing}
+          >
+            Visualize
           </button>
 
           <button
@@ -609,70 +606,79 @@ const PathFindingVisualizer = () => {
 
       {/* MAIN CONTENT: Stats + Grid + Legend */}
       <div className="content-layout">
-        {/* Left Sidebar - Stats */}
-        {stats.nodesExplored > 0 && (
-          <div
-            className={`stats-panel ${
-              stats.isComplete ? "complete" : "calculating"
-            }`}
-          >
-            <div className="stats-header">
-              <span className="stats-title">Algorithm Statistics</span>
-              {!stats.isComplete && (
-                <span className="stats-badge calculating">Calculating...</span>
-              )}
-              {stats.isComplete && (
-                <span className="stats-badge complete">Complete</span>
-              )}
+        {/* Left Sidebar - Stats (Always visible) */}
+        <div
+          className={`stats-panel ${
+            stats.isComplete
+              ? "complete"
+              : stats.nodesExplored > 0
+              ? "calculating"
+              : ""
+          }`}
+        >
+          <div className="stats-header">
+            <span className="stats-title">Algorithm Statistics</span>
+            {stats.nodesExplored === 0 && (
+              <span className="stats-badge" style={{ background: "#6b7280" }}>
+                Waiting
+              </span>
+            )}
+            {stats.nodesExplored > 0 && !stats.isComplete && (
+              <span className="stats-badge calculating">Calculating...</span>
+            )}
+            {stats.isComplete && (
+              <span className="stats-badge complete">Complete</span>
+            )}
+          </div>
+
+          <div className="stats-grid">
+            <div className="stats-item">
+              <div className="stat-icon">🔵</div>
+              <div className="stat-content">
+                <div className="stat-label">Nodes Explored</div>
+                <div className="stat-value">
+                  {stats.nodesExplored > 0 ? stats.nodesExplored : "—"}
+                </div>
+              </div>
             </div>
 
-            <div className="stats-grid">
-              <div className="stats-item">
-                <div className="stat-icon">🔵</div>
-                <div className="stat-content">
-                  <div className="stat-label">Nodes Explored</div>
-                  <div className="stat-value">{stats.nodesExplored}</div>
+            <div className="stats-item">
+              <div className="stat-icon">📏</div>
+              <div className="stat-content">
+                <div className="stat-label">Path Length</div>
+                <div className="stat-value">
+                  {stats.pathLength > 0 ? stats.pathLength : "—"}
                 </div>
               </div>
+            </div>
 
-              <div className="stats-item">
-                <div className="stat-icon">📏</div>
-                <div className="stat-content">
-                  <div className="stat-label">Path Length</div>
-                  <div className="stat-value">
-                    {stats.pathLength > 0 ? stats.pathLength : "No path"}
-                  </div>
+            <div className="stats-item">
+              <div className="stat-icon">⚖️</div>
+              <div className="stat-content">
+                <div className="stat-label">Path Cost</div>
+                <div className="stat-value">
+                  {stats.pathCost > 0 ? stats.pathCost : "—"}
                 </div>
               </div>
+            </div>
 
-              <div className="stats-item">
-                <div className="stat-icon">⚖️</div>
-                <div className="stat-content">
-                  <div className="stat-label">Path Cost</div>
-                  <div className="stat-value">
-                    {stats.pathCost > 0 ? stats.pathCost : "N/A"}
-                  </div>
-                </div>
-              </div>
-
-              <div className="stats-item">
-                <div className="stat-icon">🎯</div>
-                <div className="stat-content">
-                  <div className="stat-label">Algorithm</div>
-                  <div className="stat-value">
-                    {algorithm === "DIJKSTRA"
-                      ? "Dijkstra"
-                      : algorithm === "BFS"
-                      ? "BFS"
-                      : algorithm === "ASTAR"
-                      ? "A*"
-                      : "DFS"}
-                  </div>
+            <div className="stats-item">
+              <div className="stat-icon">🎯</div>
+              <div className="stat-content">
+                <div className="stat-label">Algorithm</div>
+                <div className="stat-value">
+                  {algorithm === "DIJKSTRA"
+                    ? "Dijkstra"
+                    : algorithm === "BFS"
+                    ? "BFS"
+                    : algorithm === "ASTAR"
+                    ? "A*"
+                    : "DFS"}
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Center - Grid */}
         <Grid
