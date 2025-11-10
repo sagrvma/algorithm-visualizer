@@ -413,7 +413,6 @@ button:disabled {
 /* ============================================
    STATS PANEL - LEFT SIDEBAR
    ============================================ */
-
 .stats-panel {
   padding: 18px;
   background: rgba(24, 16, 42, 0.87);
@@ -421,7 +420,6 @@ button:disabled {
   border-radius: 14px;
   backdrop-filter: blur(8px);
   box-shadow: 0 4px 24px rgba(168, 85, 247, 0.08);
-  /* Removed position: sticky and top: 20px */
   transition: border 0.3s, box-shadow 0.3s;
 }
 
@@ -434,6 +432,10 @@ button:disabled {
 }
 
 .stats-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 14px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(168, 85, 247, 0.2);
@@ -443,17 +445,24 @@ button:disabled {
   font-size: 14px;
   font-weight: 600;
   color: #e9d5ff;
-  margin-bottom: 6px;
 }
 
 .stats-badge {
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 8px;
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.6px;
   display: inline-block;
+  width: fit-content;
+  text-align: center;
+  min-width: 85px; /* Fixed width prevents layout shift */
+}
+
+.stats-badge.waiting {
+  background: #6b7280;
+  color: #ffffff;
 }
 
 .stats-badge.calculating {
@@ -472,8 +481,10 @@ button:disabled {
   flex-direction: column;
   gap: 10px;
 }
-
 .stats-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 12px;
   background: rgba(168, 85, 247, 0.08);
   border: 1px solid rgba(168, 85, 247, 0.2);
@@ -490,7 +501,14 @@ button:disabled {
 .stat-icon {
   font-size: 24px;
   line-height: 1;
-  margin-bottom: 6px;
+  flex-shrink: 0; /* Prevents icon from shrinking */
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1; /* Takes up remaining space */
 }
 
 .stat-label {
@@ -499,7 +517,6 @@ button:disabled {
   color: #a78bfa;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  margin-bottom: 4px;
 }
 
 .stat-value {

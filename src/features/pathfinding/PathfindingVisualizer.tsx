@@ -404,7 +404,7 @@ const PathFindingVisualizer = () => {
     path: (typeof grid)[0],
     calculatedStats: typeof stats
   ): void => {
-    const PATH_ANIMATION_DELAY = (101 - speed) * 5; //Should be slower than visitedpathdelay, so multiplying by 5 to make it more noticeable
+    const PATH_ANIMATION_DELAY = 50; //Fixed path speed, independed of user selected speed
 
     for (let i = 0; i < path.length; i++) {
       setTimeout(() => {
@@ -445,6 +445,13 @@ const PathFindingVisualizer = () => {
     const newGrid: GridType = createInitialGrid();
 
     setGrid(newGrid);
+
+    setStats({
+      nodesExplored: 0,
+      pathLength: 0,
+      pathCost: 0,
+      isComplete: false,
+    });
   };
 
   //CLEAR PATH FUNCTIONALITY
