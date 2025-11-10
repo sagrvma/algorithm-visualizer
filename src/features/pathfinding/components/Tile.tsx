@@ -13,18 +13,21 @@ const Tile = ({ tile, onMouseDown, onMouseEnter }: TileProps) => {
 
   //Deciding which conditional class the tile will get to display relevant css colour
   const getTileClass = () => {
+    let classes = "tile";
     //In decreasing order of priority as that is important
-    if (isStart) return "tile tile-start";
-    if (isEnd) return "tile tile-end";
-    if (isWall) return "tile tile-wall";
-    if (isPath) return "tile tile-path";
-    if (isVisited) return "tile tile-visited";
+    if (isStart) return (classes += " tile-start");
+    if (isEnd) return (classes += " tile-end");
+    if (isWall) return (classes += " tile-wall");
+    else {
+      if (weight === 5) classes += " tile-weight-5";
+      if (weight === 15) classes += " tile-weight-15";
 
-    //Added weight classes
-    if (weight === 5) return "tile tile-weight-medium";
-    if (weight === 15) return "tile tile-weight-heavy";
+      //Then add visited/path (overlay layers)
+      if (isVisited) classes += " tile-visited";
+      if (isPath) classes += " tile-path";
+    }
 
-    return "tile";
+    return classes;
   };
 
   return (
@@ -32,11 +35,7 @@ const Tile = ({ tile, onMouseDown, onMouseEnter }: TileProps) => {
       className={getTileClass()}
       onMouseDown={() => onMouseDown(row, col)}
       onMouseEnter={() => onMouseEnter(row, col)}
-    >
-      {weight > 1 && !isStart && !isEnd && !isWall && !isPath && (
-        <span className="tile-weight-label">{weight}</span>
-      )}
-    </div>
+    ></div>
     //Visual appearance will be handled by CSS
   );
 };
